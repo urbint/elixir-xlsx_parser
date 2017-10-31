@@ -22,13 +22,13 @@ defmodule XlsxParserTest do
   end
 
   test "get_sheet_content success" do
-    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMock)
+    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, zip: ZipMock)
     assert status == :ok
     assert ret == [{"A", 1, "a"}, {"A", 2, "two"}, {"A", 3, "c"}, {"B", 1, "d"},{"B", 2, "three"}, {"B", 3, "f"}]
   end
 
   test "get_sheet_content success without sharedStrings" do
-    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMockWithInlineStrings)
+    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, zip: ZipMockWithInlineStrings)
     assert status == :ok
     assert ret == [{"A", 1, "a"}, {"A", 2, "two"}, {"A", 3, "c"}, {"B", 1, "d"},{"B", 2, "three"}, {"B", 3, "f"}]
   end
@@ -42,7 +42,7 @@ defmodule XlsxParserTest do
   end
 
   test "write_sheet_content_to_csv success" do
-    {status, ret} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv", ZipMock, FileMock)
+    {status, ret} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv", zip: ZipMock, file: FileMock)
     assert status == :ok
     assert ret == "a,d\ntwo,three\nc,f\n"
   end
@@ -52,7 +52,7 @@ defmodule XlsxParserTest do
   end
 
   test "write_sheet_content_to_csv failure" do
-    {status, reason} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv", ZipMock, FileMockFail)
+    {status, reason} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv", zip: ZipMock, file: FileMockFail)
     assert status == :error
     assert reason == "Error writing csv file: \"file mock write fail\""
   end
